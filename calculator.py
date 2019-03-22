@@ -21,9 +21,9 @@ class CalculatorApp(App):
         '0', '.', '=', '/', '%'
     ]
 
-    def calculator(self, symbol):
+    def calculator(self, symbol) -> None:
         if symbol.text is '<':
-            self.set_result()
+            self.clear()
         elif symbol.text is not '=':
             value = self.get_result() + symbol.text
             self.set_result(value)
@@ -33,13 +33,16 @@ class CalculatorApp(App):
             except (SyntaxError, NameError):
                 self.set_result()
 
-    def set_result(self, value=''):
+    def clear(self) -> None:
+        self.set_result()
+
+    def set_result(self, value: str = '') -> None:
         self.result.text = value
 
-    def get_result(self):
+    def get_result(self) -> str:
         return self.result.text
 
-    def build(self):
+    def build(self) -> BoxLayout:
         root = BoxLayout(orientation='vertical', padding=5)
         self.result = TextInput(
             text='', readonly=True, font_size=25,
