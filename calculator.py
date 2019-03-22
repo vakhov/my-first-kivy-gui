@@ -11,8 +11,6 @@ Config.set('graphics', 'width', '300')
 Config.set('graphics', 'height', '300')
 Config.set('kivy', 'exit_on_escape', True)
 
-saveInput = ''
-
 
 class CalculatorApp(App):
     result: TextInput
@@ -24,16 +22,22 @@ class CalculatorApp(App):
     ]
 
     def calculator(self, symbol):
-        global saveInput
         if symbol.text is '<':
-            self.result.text = ''
+            self.set_result()
         elif symbol.text is not '=':
-            self.result.text += symbol.text
+            value = self.get_result() + symbol.text
+            self.set_result(value)
         else:
             try:
-                self.result.text = str(eval(self.result.text))
+                self.set_result(str(eval(self.result.text)))
             except (SyntaxError, NameError):
-                self.result = ''
+                self.set_result()
+
+    def set_result(self, value=''):
+        self.result.text = value
+
+    def get_result(self):
+        return self.result.text
 
     def build(self):
         root = BoxLayout(orientation='vertical', padding=5)
