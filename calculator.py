@@ -11,6 +11,8 @@ Config.set('graphics', 'width', '300')
 Config.set('graphics', 'height', '300')
 Config.set('kivy', 'exit_on_escape', True)
 
+saveInput = ''
+
 
 class CalculatorApp(App):
     result: TextInput
@@ -21,8 +23,17 @@ class CalculatorApp(App):
         '0', '.', '=', '/', '%'
     ]
 
-    def calculator(self, *args, **kwargs):
-        pass
+    def calculator(self, symbol):
+        global saveInput
+        if symbol.text is '<':
+            self.result.text = ''
+        elif symbol.text is not '=':
+            self.result.text += symbol.text
+        else:
+            try:
+                self.result.text = str(eval(self.result.text))
+            except (SyntaxError, NameError):
+                self.result = ''
 
     def build(self):
         root = BoxLayout(orientation='vertical', padding=5)
