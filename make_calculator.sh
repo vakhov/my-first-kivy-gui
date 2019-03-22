@@ -1,0 +1,1 @@
+pyinstaller -y --clean --windowed --name calculator   --exclude-module _tkinter   --exclude-module Tkinter   --exclude-module enchant   --exclude-module twisted ./calculator.py
