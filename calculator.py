@@ -18,9 +18,11 @@ class CalculatorApp(App):
     """
     # Хранение строки IO
     result: TextInput
+    memory: str
 
     # Символы кнопок калькулятора
     symbol_buttons = [
+        'mr', 'mc', 'm', 'pi', 'AC',
         '7', '8', '9', '+', '<',
         '4', '5', '6', '-', '(',
         '1', '2', '3', '*', ')',
@@ -33,16 +35,41 @@ class CalculatorApp(App):
         :param symbol:
         :return:
         """
-        if symbol.text is '<':
-            self.clear()
+        if symbol.text is 'AC':
+            self.clear()  # Очищаем строку ввода
+        elif symbol.text is 'pi':
+            self.set_result(self.get_result() + '3.14')  # добавляем в строку число Пи
+        elif symbol.text is 'mr':
+            self.perform()
+            self.memory = self.get_result()  # Сохраняем в память значение
+        elif symbol.text is 'mc':
+            self.memory = ''
+        elif symbol.text is 'm':
+            self.set_result(self.get_result() + self.memory)
+        elif symbol.text is '<':
+            self.remove_last_symbol()  # Удаляем последний символ
         elif symbol.text is not '=':
             value = self.get_result() + symbol.text
             self.set_result(value)
         else:
-            try:
-                self.set_result(str(eval(self.result.text)))
-            except (SyntaxError, NameError):
-                self.set_result()
+            self.perform()
+
+    def perform(self) -> None:
+        """
+        Вычисление строки
+        :return:
+        """
+        try:
+            self.set_result(str(eval(self.result.text)))
+        except (SyntaxError, NameError, ZeroDivisionError):
+            self.set_result()
+
+    def remove_last_symbol(self) -> None:
+        """
+        Удаление последнего символа
+        :return:
+        """
+        self.set_result(self.get_result()[:-1])
 
     def clear(self) -> None:
         """
