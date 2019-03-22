@@ -13,7 +13,13 @@ Config.set('kivy', 'exit_on_escape', True)
 
 
 class CalculatorApp(App):
+    """
+    Реализация простого калькулятора
+    """
+    # Хранение строки IO
     result: TextInput
+
+    # Символы кнопок калькулятора
     symbol_buttons = [
         '7', '8', '9', '+', '<',
         '4', '5', '6', '-', '(',
@@ -21,7 +27,12 @@ class CalculatorApp(App):
         '0', '.', '=', '/', '%'
     ]
 
-    def calculator(self, symbol) -> None:
+    def calculator(self, symbol: Button) -> None:
+        """
+        Обработка вычислений
+        :param symbol:
+        :return:
+        """
         if symbol.text is '<':
             self.clear()
         elif symbol.text is not '=':
@@ -34,12 +45,25 @@ class CalculatorApp(App):
                 self.set_result()
 
     def clear(self) -> None:
+        """
+        Очистка строки ввода
+        :return:
+        """
         self.set_result()
 
     def set_result(self, value: str = '') -> None:
+        """
+        Передача значений в строку ввода
+        :param value:
+        :return:
+        """
         self.result.text = value
 
     def get_result(self) -> str:
+        """
+        Получение занчений строки ввода
+        :return:
+        """
         return self.result.text
 
     def build(self) -> BoxLayout:
